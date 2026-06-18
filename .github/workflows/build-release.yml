@@ -1,4 +1,4 @@
-```yaml
+
 name: Build and Publish Release
 
 on:
@@ -197,4 +197,4 @@ jobs:
           fi
 
           gh "${args[@]}"
-```
+
