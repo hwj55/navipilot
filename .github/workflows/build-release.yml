@@ -46,24 +46,7 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Check signing secrets
-        env:
-          RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
-          RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
-          RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
-        run: |
-          for name in RELEASE_STORE_PASSWORD RELEASE_KEY_ALIAS RELEASE_KEY_PASSWORD; do
-            if [ -z "${!name}" ]; then
-              echo "::error::Repository secret $name is not configured"
-              exit 1
-            fi
-          done
-
-          if [ ! -f app/release.keystore ]; then
-            echo "::error::app/release.keystore does not exist"
-            exit 1
-          fi
-
+     
       - name: Create local.properties
         env:
           RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
@@ -78,9 +61,7 @@ jobs:
         run: |
           {
             printf 'sdk.dir=%s\n' "$ANDROID_HOME"
-            printf 'RELEASE_STORE_PASSWORD=%s\n' "$RELEASE_STORE_PASSWORD"
-            printf 'RELEASE_KEY_ALIAS=%s\n' "$RELEASE_KEY_ALIAS"
-            printf 'RELEASE_KEY_PASSWORD=%s\n' "$RELEASE_KEY_PASSWORD"
+          
 
             if [ -n "$GITHUB_CLIENT_ID" ]; then
               printf 'GITHUB_CLIENT_ID=%s\n' "$GITHUB_CLIENT_ID"
